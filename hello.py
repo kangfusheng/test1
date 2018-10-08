@@ -1,18 +1,21 @@
+#-*- encoding=UTF-8 -*-
 #装饰器
 #@log
 '''
 * 无名字的参数
 ** 有名字的参数
 '''
-def log(func):
-    def wrapper(*args, **kvargs):
-        print('before calling ',func.__name__)
-        print('args', args, 'kvargs', kvargs)
-        func(*args, **kvargs)
-        print('end calling ',func.__name__)
-    return wrapper
+def log(level, *args, **kvargs):
+    def inner(func):
+        def wrapper(*args, **kvargs):
+            print(level, 'before calling ',func.__name__)
+            print(level, 'args', args, 'kvargs', kvargs)
+            func(*args, **kvargs)
+            print(level, 'end calling ',func.__name__)
+        return wrapper
+    return inner
 
-@log
+@log(level = 'INFO')
 def hello(name,age):
     print('hello', name, age)
 
